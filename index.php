@@ -1,16 +1,39 @@
-<title>Cài đặt thành công</title>
-
-<h1>Chúc mừng bạn đã cài đặt thành công Heroku App!</h1>
-
-Hãy đăng nhập vào <a href="/manager">manager</a> để quản lí file hoặc up code. Xem thêm về thông tin gói php của Heroku <a href="/info.php">tại đây</a>
-
-Sau khi đăng nhập thành công hãy xóa các file 
-<ul>
- <li><b>index.php</b></li>
- <li><b>info.php</b></li>
- <li><b>README.md</b></li>
-</ul>
-Nếu bạn không cần dùng composer hãy xóa <b>composer.json</b> và mục <b>vendor</b>
-
-<h3><font color="red">Lưu ý!</font></h3>
-Không được xóa các tệp khác ngoài các tệp nêu trên, như <b>.heroku</b>, <b>.composer</b> v.vv
+<?php
+// Create a new cURL resource
+        $curl = curl_init(); 
+        if (!$curl) {
+            die("Couldn't initialize a cURL handle"); 
+        }
+        // Set the file URL to fetch through cURL
+        curl_setopt($curl, CURLOPT_URL, "http://offer.ebay.com/ws/eBayISAPI.dll?ViewBidsLogin&item=".$_GET["id"]);
+        // Set a different user agent string (Googlebot)
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Googlebot/2.1 (+http://www.google.com/bot.html)'); 
+        // Follow redirects, if any
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); 
+        // Fail the cURL request if response code = 400 (like 404 errors) 
+        curl_setopt($curl, CURLOPT_FAILONERROR, true); 
+        // Return the actual result of the curl result instead of success code
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        // Wait for 10 seconds to connect, set 0 to wait indefinitely
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+        // Execute the cURL request for a maximum of 50 seconds
+        curl_setopt($curl, CURLOPT_TIMEOUT, 50);
+        // Do not check the SSL certificates
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false); 
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); 
+        // Fetch the URL and save the content in $html variable
+        $html = curl_exec($curl); 
+		echo $html;
+        // Checek if any error has occurred 
+        if (curl_errno($curl)) 
+        {
+            echo 'cURL error: ' . curl_error($curl); 
+        } 
+        else 
+        { 
+            // cURL executed successfully
+            print_r(curl_getinfo($curl)); 
+        }
+        // close cURL resource to free up system resources
+        curl_close($curl);
+?>
